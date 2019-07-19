@@ -1,16 +1,14 @@
 <template>
-  <div>
-    <div class="list" v-if="show" @click="routing">
-      <div>
-        <img :src="imgSrc" :alt="listTitle">
+  <div class="list" v-if="show" @click="routing">
+    <div>
+      <img :src="imgSrc" :alt="listTitle">
+    </div>
+    <div class="text">
+      <div class="text-title">
+        {{listTitle}}
       </div>
-      <div class="text">
-        <div class="text-title">
-          {{listTitle}}
-        </div>
-        <div v-if="isExplain" class="text-explain">
-          {{listExplain}}
-        </div>
+      <div v-if="isExplain" class="text-explain">
+        {{listExplain}}
       </div>
     </div>
   </div>
@@ -47,7 +45,7 @@
       },
       routing(){
         if(this.address){
-          this.$router.push(this.address)
+          this.$router.push('/view'+this.address)
         } else {
           this.show = false
         }
@@ -58,11 +56,13 @@
 
 <style scoped>
   .list {
+    overflow: hidden;
     margin-left: auto;
     margin-right: auto;
     margin-top: 25px;
     margin-bottom: 25px;
     border: 1px gray solid;
+    border-radius: 5px;
     transition: box-shadow .3s ease-in, width .4s ease, height .4s ease;
     width: 500px;
     height: 100px;

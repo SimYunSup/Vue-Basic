@@ -1,21 +1,16 @@
 <template>
-  <div>
-    <background
-      routing="Main"
-    >
-      <div
-        v-for="{src, title, explain, address} in routeData"
-        :key="title"
-      >
-        <list
-          :img-src="src"
-          :list-title="title"
-          :list-explain="explain"
-          :address="address"
-        />
-      </div>
-    </background>
-  </div>
+  <background
+    routing="Main"
+  >
+    <list
+      v-for="{src, title, explain, address} in routeData"
+      :key="title"
+      :img-src="src"
+      :list-title="title"
+      :list-explain="explain"
+      :address="address"
+    />
+  </background>
 </template>
 
 <script>

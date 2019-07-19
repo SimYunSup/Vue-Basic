@@ -15,6 +15,12 @@
         </div>
         <div class="mainItem">
           <slot></slot>
+          <foo
+            facebook="https://www.facebook.com/pedogunu"
+            email-address="pedogunu@gmail.com"
+          >
+            <h4>Pedogunu</h4>
+          </foo>
         </div>
       </div>
     </div>
@@ -22,6 +28,7 @@
 </template>
 
 <script>
+  import foo from './foo'
   export default {
     name: "background",
     props: {
@@ -38,11 +45,14 @@
     computed: {
       darkMode(){
         return {
-          containerDark: this.$store.darkMode,
+          containerDark: !!this.$store.darkMode,
           containerLight: !this.$store.darkMode,
           container: true
         }
       }
+    },
+    components: {
+      foo
     }
   }
 </script>
@@ -55,7 +65,6 @@
   .container {
     margin: 0 auto;
     width: 1000px;
-    height: 90vh;
     box-shadow:0 0 1px black;
   }
   .containerDark {
@@ -77,7 +86,7 @@
     justify-content: center;
     text-align: center;
     transition: background-color .2s;
-    width: 60px;
+    width: 6%;
     height: 31px;
   }
   .backButton:hover {
@@ -89,11 +98,10 @@
     font-weight: bold;
     vertical-align: middle;
     padding-left: 15px;
-    width: 925px;
+    width: 9.25%;
     height: 31px;
   }
   .mainItem {
     width: 1000px;
-    height: auto;
   }
 </style>

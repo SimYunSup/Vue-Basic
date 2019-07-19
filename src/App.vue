@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <transition :name="transitionName">
+    <transition :name="transitionName" mode="out-in">
       <router-view/>
     </transition>
   </div>
@@ -27,7 +27,11 @@
 .slide-fade-right-enter-active, .slide-fade-right-leave-active {
   transition: all .3s ease;
 }
-.slide-fade-right-enter, .slide-fade-right-leave-to {
+.slide-fade-right-enter {
+  transform: translateX(-500px) scale(0.8);
+  opacity: 0;
+}
+.slide-fade-right-leave-to {
   transform: translateX(500px) scale(0.8);
   opacity: 0;
 }
@@ -35,7 +39,11 @@
 .slide-fade-left-enter-active, .slide-fade-left-leave-active {
   transition: all .3s ease;
 }
-.slide-fade-left-enter, .slide-fade-left-leave-to {
+.slide-fade-left-enter {
+  transform: translateX(500px) scale(0.8);
+  opacity: 0;
+}
+.slide-fade-left-leave-to {
   transform: translateX(-500px) scale(0.8);
   opacity: 0;
 }

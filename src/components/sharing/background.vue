@@ -45,8 +45,8 @@
     computed: {
       darkMode(){
         return {
-          containerDark: this.$store.state.darkMode,
-          containerLight: !this.$store.state.darkMode,
+          containerDark: !!this.$store.darkMode,
+          containerLight: !this.$store.darkMode,
           container: true
         }
       }
@@ -69,11 +69,11 @@
   }
   .containerDark {
     background-color: midnightblue;
-    color: white;
+    text-decoration-color: white;
   }
   .containerLight {
     background-color: white;
-    color: black;
+    text-decoration-color: black;
   }
 
   .backgroundHeader{
@@ -85,7 +85,6 @@
     padding-top: 6px;
     justify-content: center;
     text-align: center;
-    cursor: pointer;
     transition: background-color .2s;
     width: 6%;
     height: 31px;

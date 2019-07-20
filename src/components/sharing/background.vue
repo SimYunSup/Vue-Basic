@@ -1,16 +1,20 @@
 <template>
   <div>
     <div class="background">
-      <div :class="darkMode">
+      <div :class="containeDarkMode">
         <div class="backgroundHeader">
           <div
-            class="backButton"
+            :class="backButtonDarkMode"
             @click="home"
           >
             Home
           </div>
           <div class="headerText">
             {{routing}}
+          </div>
+          <div class="toggleMode">
+            <div class="toggleDark" @click="toggleDark"></div>
+            <div class="toggleLight" @click="toggleLight"></div>
           </div>
         </div>
         <div class="mainItem">
@@ -29,6 +33,7 @@
 
 <script>
   import foo from './foo'
+  import { mapMutations } from 'vuex'
   export default {
     name: "background",
     props: {
@@ -38,16 +43,24 @@
       }
     },
     methods: {
+      ...mapMutations(['toggleDark', 'toggleLight']),
       home(){
         this.$router.push('/')
       }
     },
     computed: {
-      darkMode(){
+      containeDarkMode(){
         return {
           containerDark: this.$store.state.darkMode,
           containerLight: !this.$store.state.darkMode,
           container: true
+        }
+      },
+      backButtonDarkMode(){
+        return {
+          backButtonDark: this.$store.state.darkMode,
+          backButtonLight: !this.$store.state.darkMode,
+          backButton: true
         }
       }
     },
@@ -86,13 +99,49 @@
     justify-content: center;
     text-align: center;
     cursor: pointer;
-    transition: background-color .2s;
     width: 6%;
     height: 31px;
   }
-  .backButton:hover {
+  .backButtonLight {
+    transition: background-color .2s;
+  }
+  .backButtonLight:hover {
     background-color: gray;
   }
+  .backButtonDark {
+    transition: background-color .2s;
+  }
+  .backButtonDark:hover {
+    background-color: dodgerblue;
+  }
+
+  .toggleMode{
+    float: right;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-left: 1px gray solid;
+    width: 10%;
+    height: 100%;
+  }
+  .toggleLight{
+    border: black 1px solid;
+    border-radius: 2px;
+    cursor: pointer;
+    background-color: white;
+    width: 20px;
+    height: 20px;
+  }
+  .toggleDark{
+    border: white 1px solid;
+    border-radius: 2px;
+    cursor: pointer;
+    background-color: midnightblue;
+    width: 20px;
+    height: 20px;
+  }
+
   .headerText {
     float: left;
     padding-top: 6px;

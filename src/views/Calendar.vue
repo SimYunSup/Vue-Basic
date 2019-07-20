@@ -20,18 +20,28 @@
           {{selectedDateString}}
         </div>
         <div class="events">
-          <div
-            :class="{event: true}"
-            v-for="(event, index) in selectedEvent"
-            :key="index"
+          <transition-group
+            name="plus"
           >
-            <div class="name">
-              {{event.name}}
+            <div
+              :class="{event: true}"
+              v-for="event in selectedEvent"
+              :key="event.name"
+            >
+              <div class="name">
+                {{event.name}}
+              </div>
+              <div class="explain">
+                {{event.explain}}
+              </div>
+              <button
+                :class="removeeventDarkMode"
+                @click="minusEvent(event)"
+              >
+                Remove
+              </button>
             </div>
-            <div class="explain">
-              {{event.explain}}
-            </div>
-          </div>
+          </transition-group>
           <div class="plusevents">
             <div class="inputs">
               <input
@@ -111,6 +121,10 @@
           name: this.eventName,
           explain: this.eventExplain
         })
+      },
+      minusEvent(event){
+        let index = this.events.indexOf(event)
+        this.events.splice(index, 1)
       }
     },
     computed: {
@@ -126,6 +140,13 @@
           colDark: this.$store.state.darkMode,
           colLight: !this.$store.state.darkMode,
           addevent: true
+        }
+      },
+      removeeventDarkMode(){
+        return{
+          colDark: this.$store.state.darkMode,
+          colLight: !this.$store.state.darkMode,
+          removeevent: true
         }
       },
       inputDarkMode(){
@@ -150,6 +171,9 @@
     width: 100%
   }
   .mainCalendar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding-top: 50px;
     padding-bottom: 50px;
     width: 70%;
@@ -160,6 +184,7 @@
   }
   .eventCalendar{
     width: 30%;
+    height: fit-content;
   }
 
   .eventDate{
@@ -172,6 +197,7 @@
     margin-right: 10%;
     margin-top: 5%;
     margin-bottom: 5%;
+    padding-bottom: 5%;
     border-bottom: 1px gray solid;
     height: 15%
   }
@@ -180,10 +206,18 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    overflow: hidden;
     margin-top: 10px;
     margin-bottom: 10px;
-
   }
+  .plus-enter-active, .plus-leave-active{
+    transition: all 1s;
+  }
+  .plus-enter, .plus-leave-to{
+    opacity: 0;
+    transform: translateX(100px);
+  }
+
   .name{
     font-size: 25px;
     margin-right: auto;
@@ -230,6 +264,15 @@
     cursor: pointer;
     width: 30%;
   }
+  .removeevent{
+    margin-top: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    border: 0;
+    border-radius: 15px;
+    cursor: pointer;
+    width: 30%;
+  }
 
   .colLight{
     background-color: white;
@@ -247,4 +290,5 @@
   .colDark:hover{
     background-color: royalblue;
   }
+
 </style>

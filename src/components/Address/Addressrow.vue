@@ -1,8 +1,8 @@
 <template>
   <div
     :class="rowBox"
-    @mouseenter="showing"
-    @mouseleave="showing"
+    @mouseenter="enable"
+    @mouseleave="disable"
   >
     <div
       class="index"
@@ -21,7 +21,9 @@
         <input
           :class="columnDarkMode"
           type="text"
-          v-model="personData.name">
+          v-model="personData.name"
+          placeholder="Name"
+        >
       </slot>
     </div>
     <div
@@ -33,6 +35,7 @@
           :class="columnDarkMode"
           type="text"
           v-model="personData.emailAddress"
+          placeholder="Email Address"
         >
       </slot>
     </div>
@@ -42,6 +45,7 @@
     >
       <slot name="gender">
         <select
+          class="genderSelect"
           :class="columnDarkMode"
           v-model="personData.gender"
         >
@@ -60,12 +64,13 @@
           :class="columnDarkMode"
           type="text"
           v-model="personData.memo"
+          placeholder="Memo"
         >
       </slot>
     </div>
     <transition name="fade">
       <button
-        class="button"
+        :class="buttonDarkMode"
         v-if="show"
         @click="listEvent"
       >
@@ -104,9 +109,13 @@
       }
     },
     methods: {
-      showing() {
+      enable() {
         if(this.type !== 'first')
-          this.show = !this.show
+          this.show = true
+      },
+      disable(){
+        if(this.type !== 'first')
+          this.show = false
       },
       listEvent(){
         if(this.type === 'list')
@@ -127,9 +136,16 @@
       },
       columnDarkMode(){
         return {
-          columnDark: !!this.$store.darkMode,
-          columnLight: !this.$store.darkMode,
+          columnDark: this.$store.state.darkMode,
+          columnLight: !this.$store.state.darkMode,
           column: true
+        }
+      },
+      buttonDarkMode(){
+        return{
+          buttonDark: this.$store.state.darkMode,
+          buttonLight: !this.$store.state.darkMode,
+          button: true
         }
       },
       isType() {
@@ -147,7 +163,6 @@
     margin-left: auto;
     margin-right: auto;
     border-top: gray 1px solid;
-    border-bottom: gray 1px solid;
     display: flex;
     flex-direction: row;
     overflow: hidden;
@@ -166,16 +181,19 @@
     align-items: center;
     justify-content: center;
     border: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-size: 100%;
-    height: 100%;
+    width: 100%;
+    height: 80%;
   }
   .columnDark {
     background-color: midnightblue;
-    text-decoration-color: white;
+    color: white;
   }
   .columnLight {
     background-color: white;
-    text-decoration-color: black;
+    color: black;
   }
   .index {
     width: 7%;
@@ -189,10 +207,33 @@
   .gender {
     width: 13%;
   }
+  .genderSelect{
+    cursor: pointer;
+  }
   .memo {
-    width: 30%;
+    width: 27%;
   }
   .button {
-    width: 10%
+    width: 10%;
+    border-top: 0;
+    border-bottom: 0;
+    cursor: pointer;
+  }
+  .buttonLight {
+    border-left: 1px gray solid;
+    border-right: 1px gray solid;
+    background-color: white;
+    color: black;
+    transition: background-color .3s;
+  }
+  .buttonLight:hover {
+    background-color: deepskyblue;
+  }
+
+  .fade-enter-active, .fade-leave-active{
+    transition: all .3s;
+  }
+  .fade-enter, .fade-leave-to{
+    opacity: 0;
   }
 </style>

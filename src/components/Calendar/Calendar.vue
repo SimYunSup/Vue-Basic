@@ -235,16 +235,25 @@
   }
   .monthSelect{
     border: 0;
+    cursor: pointer;
     width: 40%;
     height: 50%;
   }
   .monthSelectDark{
     background-color: midnightblue;
     color: white;
+    transition: background-color .2s;
+  }
+  .monthSelectDark:hover{
+    background-color: royalblue;
   }
   .monthSelectLight{
     background-color: white;
     color: black;
+    transition: background-color .2s;
+  }
+  .monthSelectLight:hover{
+    background-color: deepskyblue;
   }
   .monthButton{
     cursor: pointer;

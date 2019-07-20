@@ -10,19 +10,23 @@
         <template #gender>Gender</template>
         <template #memo>Memo</template>
       </address-row>
-      <address-row
-        v-for="(data, index) in personalData"
-        :key="index"
-        type="list"
-        :index="index"
-        @removePerson="removePersonal"
+      <transition-group
+        name="address"
       >
-        <template #index="{indexOfBox}">{{indexOfBox}}.</template>
-        <template #name>{{data.name}}</template>
-        <template #email>{{data.emailAddress}}</template>
-        <template #gender>{{data.gender}}</template>
-        <template #memo>{{data.memo}}</template>
-      </address-row>
+        <address-row
+          v-for="(data, index) in personalData"
+          :key="data.name"
+          type="list"
+          :index="index"
+          @removePerson="removePersonal"
+        >
+          <template #index="{indexOfBox}">{{indexOfBox}}.</template>
+          <template #name>{{data.name}}</template>
+          <template #email>{{data.emailAddress}}</template>
+          <template #gender>{{data.gender}}</template>
+          <template #memo>{{data.memo}}</template>
+        </address-row>
+      </transition-group>
       <address-row
         type="add"
         @addPerson="pushPersonal"
@@ -74,7 +78,7 @@
             count++
           }
         }
-        if(count !== 1){
+        if(count < 1){
           alert('Email 형식을 지켜주세요.')
           return
         }
@@ -93,10 +97,17 @@
 </script>
 
 <style scoped>
-  .mainAddress{
+  .mainAddress {
     margin-left: auto;
     margin-right: auto;
     padding-top: 50px;
     padding-bottom: 50px;
+  }
+  .address-enter-active, .address-leave-active {
+    transition: all .5s;
+  }
+  .address-enter, .address-leave-to {
+    opacity: 0;
+    transform: translateX(200px);
   }
 </style>

@@ -8,7 +8,12 @@ export default new Vuex.Store({
     darkMode: false
   },
   mutations: {
-
+    toggleDark(state){
+      state.darkMode = true
+    },
+    toggleLight(state){
+      state.darkMode = false
+    }
   },
   actions: {
 

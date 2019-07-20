@@ -16,9 +16,10 @@
 <script>
   import list from '../components/Main/list'
   import background from '../components/sharing/background'
+
   export default {
     name: "Main",
-    data(){
+    data() {
       return {
         routeData: [{
           src: 'https://images.pexels.com/photos/205414/pexels-photo-205414.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
@@ -33,7 +34,8 @@
         }, {
           title: 'Sups'
         }]
-      }},
+      }
+    },
     components: {
       background,
       list

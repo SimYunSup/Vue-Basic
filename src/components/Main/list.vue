@@ -1,17 +1,21 @@
 <template>
-  <div class="list" v-if="show" @click="routing">
-    <div>
-      <img :src="imgSrc" :alt="listTitle">
-    </div>
-    <div class="text">
-      <div class="text-title">
-        {{listTitle}}
+  <transition
+    name="fade"
+  >
+    <div class="list" v-if="show" @click="routing">
+      <div>
+        <img :src="imgSrc" :alt="listTitle">
       </div>
-      <div v-if="isExplain" class="text-explain">
-        {{listExplain}}
+      <div class="text">
+        <div class="text-title">
+          {{listTitle}}
+        </div>
+        <div v-if="isExplain" class="text-explain">
+          {{listExplain}}
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -63,6 +67,7 @@
     margin-bottom: 25px;
     border: 1px gray solid;
     border-radius: 5px;
+    cursor: pointer;
     transition: box-shadow .3s ease-in, width .4s ease, height .4s ease;
     width: 500px;
     height: 100px;
@@ -110,5 +115,12 @@
     transition: all .4s;
     width: 100px;
     height: 100px;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
   }
 </style>

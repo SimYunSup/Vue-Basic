@@ -11,9 +11,6 @@
             @selectDate="selectedDate"
           />
         </div>
-        <div class="calendarButtons">
-
-        </div>
       </div>
       <div class="eventCalendar">
         <div class="eventDate">
@@ -108,7 +105,9 @@
             name: 'Go to Toronto',
             explain: 'at 7 AM'
           }
-        ]
+        ],
+        buttons: ['Last Year', 'Last Month', 'Last Week', 'Today',
+        'Next Week', 'Next Month', 'Last Year']
       }
     },
     methods: {
@@ -121,6 +120,8 @@
           name: this.eventName,
           explain: this.eventExplain
         })
+        this.eventName = ''
+        this.eventExplain = ''
       },
       minusEvent(event){
         let index = this.events.indexOf(event)
@@ -172,6 +173,7 @@
   }
   .mainCalendar{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding-top: 50px;

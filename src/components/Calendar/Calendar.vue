@@ -3,10 +3,15 @@
     <thead>
       <tr class="dateTableRow">
         <td
-          class="dateTableCol monthButton"
+          class="dateTableCol"
           @click="previousMonth"
         >
-          &lt;
+          <div
+            v-if="this.rangeOfyear.startYear <= this.displayYear - 1"
+            class="monthButton"
+          >
+            &lt;
+          </div>
         </td>
         <td colspan="5" class="monthSelectRow">
           <select
@@ -34,10 +39,16 @@
           </select>
         </td>
         <td
-          class="dateTableCol monthButton"
+          class="dateTableCol"
           @click="nextMonth"
         >
-          &gt;
+          <div
+            v-if="this.rangeOfyear.startYear +
+             this.rangeOfyear.range - 1 >= this.displayYear + 1"
+            class="monthButton"
+          >
+            &gt;
+          </div>
         </td>
       </tr>
     </thead>
@@ -256,8 +267,14 @@
     background-color: deepskyblue;
   }
   .monthButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color .2s;
+    width: 100%;
+    height: 100%;
   }
   .monthButton:hover{
     background-color: blue;

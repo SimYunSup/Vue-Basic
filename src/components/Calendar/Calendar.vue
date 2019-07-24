@@ -1,106 +1,105 @@
 <template>
   <table class="dateTable">
     <thead>
-      <tr class="dateTableRow">
-        <td
-          class="dateTableCol"
-          @click="previousMonth"
+    <tr class="dateTableRow">
+      <td
+        class="dateTableCol"
+        @click="previousMonth"
+      >
+        <div
+          v-if="this.rangeOfyear.startYear <= this.displayYear - 1"
+          class="monthButton"
         >
-          <div
-            v-if="this.rangeOfyear.startYear <= this.displayYear - 1"
-            class="monthButton"
-          >
-            &lt;
-          </div>
-        </td>
-        <td colspan="5" class="monthSelectRow">
-          <select
-            :class="monthSelectDarkMode"
-            v-model="displayYear"
-          >
-            <option
-              v-for="year in years"
-              :key="year"
-            >
-              {{year}}
-            </option>
-          </select>
-          <select
-            :class="monthSelectDarkMode"
-            v-model="displayMonth"
-          >
-            <option
-              v-for="(month,index) in monthInfo"
-              :value="index + 1"
-              :key="index"
-            >
-              {{month}}
-            </option>
-          </select>
-        </td>
-        <td
-          class="dateTableCol"
-          @click="nextMonth"
+          &lt;
+        </div>
+      </td>
+      <td colspan="5" class="monthSelectRow">
+        <select
+          :class="monthSelectDarkMode"
+          v-model="displayYear"
         >
-          <div
-            v-if="this.rangeOfyear.startYear +
+          <option
+            v-for="year in years"
+            :key="year"
+          >
+            {{year}}
+          </option>
+        </select>
+        <select
+          :class="monthSelectDarkMode"
+          v-model="displayMonth"
+        >
+          <option
+            v-for="(month,index) in monthInfo"
+            :value="index + 1"
+            :key="index"
+          >
+            {{month}}
+          </option>
+        </select>
+      </td>
+      <td
+        class="dateTableCol"
+        @click="nextMonth"
+      >
+        <div
+          v-if="this.rangeOfyear.startYear +
              this.rangeOfyear.range - 1 >= this.displayYear + 1"
-            class="monthButton"
-          >
-            &gt;
-          </div>
-        </td>
-      </tr>
+          class="monthButton"
+        >
+          &gt;
+        </div>
+      </td>
+    </tr>
     </thead>
     <tbody>
-      <tr class="dateTableRow">
-        <td
-          v-for="(day, index) in dayInfo"
-          :class="{dateTableCol: true, day: true}"
-          :key="index"
-        >
-          {{day}}
-        </td>
-      </tr>
-      <tr
-        v-for="(dates, index) in calendar"
-        :class="{dateTableRow: true}"
+    <tr class="dateTableRow">
+      <td
+        v-for="(day, index) in dayInfo"
+        :class="{dateTableCol: true, day: true}"
         :key="index"
       >
-        <td
-          v-for="(dateNum, index) in dates"
-          :key="index"
-          :class="dateNum.enable"
-          @click="selectDate(dateNum)"
-        >
-          {{dateNum.date}}
-        </td>
-      </tr>
+        {{day}}
+      </td>
+    </tr>
+    <tr
+      v-for="(dates, index) in calendar"
+      :class="{dateTableRow: true}"
+      :key="index"
+    >
+      <td
+        v-for="(dateNum, index) in dates"
+        :key="index"
+        :class="dateNum.enable"
+        @click="selectDate(dateNum)"
+      >
+        {{dateNum.date}}
+      </td>
+    </tr>
     </tbody>
   </table>
 </template>
 
 <script>
-  function dateStringGMT(dates){
-    let nowDate = new Date(dates)
-    let month = '' + (nowDate.getMonth() + 1)
-    let date = '' + nowDate.getDate()
-    let monthString = month.length === 2
-      ? month
-      : '0' + month
-    let dateString = date.length === 2
-      ? date
-      : '0' + date
-    return nowDate.getFullYear() + '-' + monthString + '-' + dateString
+  function dateStringGMT(dates) {
+    const YEAR_OPTIONS = {
+      year: 'numeric',
+      month: '2-digit',
+      date: '2-digit'
+    }
+    return new Intl.DateTimeFormat(YEAR_OPTIONS).format(dates)
   }
+
   function yearOfString(date) {
     let nowDate = new Date(date)
     return Number(dateStringGMT(nowDate).slice(0, 4))
   }
+
   function monthOfString(date) {
     let nowDate = new Date(date)
     return Number(dateStringGMT(nowDate).slice(5, 7))
   }
+
   function dateOfString(date) {
     let nowDate = new Date(date)
     return Number(dateStringGMT(nowDate).slice(8, 10))
@@ -110,7 +109,7 @@
     name: "calendar",
     data() {
       return {
-        displayYear: yearOfString(this.initialDateString),
+        displayYear: this.yearOfString,
         displayMonth: monthOfString(this.initialDateString),
         displayDate: dateOfString(this.initialDateString),
         monthInfo: ['January', 'February', 'March', 'April', 'May', 'June',
@@ -137,8 +136,8 @@
       }
     },
     methods: {
-      selectDate(date){
-        if(date.enable.display === true){
+      selectDate(date) {
+        if (date.enable.display === true) {
           this.displayDate = date.date
           let displayDate = new Date(
             this.displayYear,
@@ -148,15 +147,15 @@
           this.$emit('selectDate', {date: displayDateString})
         }
       },
-      previousMonth(){
-        if(this.displayMonth === 1){
+      previousMonth() {
+        if (this.displayMonth === 1) {
           this.displayYear--
           this.displayMonth = 12
         } else
           this.displayMonth--
       },
-      nextMonth(){
-        if(this.displayMonth === 12){
+      nextMonth() {
+        if (this.displayMonth === 12) {
           this.displayYear++
           this.displayMonth = 1
         } else
@@ -164,25 +163,32 @@
       }
     },
     computed: {
-      calendar(){
+      yearOfString() {
+        return this.initialDateString.slice(0, 4) * 1
+      },
+      calendar() {
+        console.log(this.displayYear)
+        console.log(this.displayMonth)
         let displayFirstDate = new Date(
           this.displayYear,
           this.displayMonth - 1,
           1)
         let displayDay = displayFirstDate.getDay()
-        let dateArray = [[],[],[],[],[],[]]
-        if(displayDay !== 0)
+        let dateArray = [[], [], [], [], [], []]
+        if (displayDay !== 0)
           displayFirstDate.setDate(-displayDay + 1)
-        for(let i=0; i < 6; i++)
-          for(let j=0; j < 7; j++){
+        for (let i = 0; i < 6; i++)
+          for (let j = 0; j < 7; j++) {
             let displayDate = displayFirstDate.getDate()
             let displayMonth = displayFirstDate.getMonth() + 1
             let displayNowDateString = dateStringGMT(displayFirstDate)
               .slice(0, 10)
             let eventEnable = this.event.find(
-              (el) => {return el.dateString === displayNowDateString}
-            ) !== undefined
-            && this.displayMonth === displayMonth
+              (el) => {
+                return el.dateString === displayNowDateString
+              }
+              ) !== undefined
+              && this.displayMonth === displayMonth
             dateArray[i][j] = {
               date: displayDate,
               enable: {
@@ -199,13 +205,13 @@
 
         return dateArray
       },
-      years(){
+      years() {
         return Array
           .apply(null, {length: this.rangeOfyear.range})
           .map(Number.call, num => num + this.rangeOfyear.startYear)
       },
-      monthSelectDarkMode(){
-        return{
+      monthSelectDarkMode() {
+        return {
           monthSelectDark: this.$store.state.darkMode,
           monthSelectLight: !this.$store.state.darkMode,
           monthSelect: true
@@ -216,11 +222,12 @@
 </script>
 
 <style scoped>
-  .dateTable{
+  .dateTable {
     margin-left: auto;
     margin-right: auto;
   }
-  .dateTableCol{
+
+  .dateTableCol {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -230,13 +237,15 @@
     width: 50px;
     height: 50px;
   }
-  .dateTableRow{
+
+  .dateTableRow {
     display: flex;
     flex-direction: row;
     height: 55px;
     overflow: hidden;
   }
-  .monthSelectRow{
+
+  .monthSelectRow {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -244,29 +253,35 @@
     height: 100%;
     margin: 3px;
   }
-  .monthSelect{
+
+  .monthSelect {
     border: 0;
     cursor: pointer;
     width: 40%;
     height: 50%;
   }
-  .monthSelectDark{
+
+  .monthSelectDark {
     background-color: midnightblue;
     color: white;
     transition: background-color .2s;
   }
-  .monthSelectDark:hover{
+
+  .monthSelectDark:hover {
     background-color: royalblue;
   }
-  .monthSelectLight{
+
+  .monthSelectLight {
     background-color: white;
     color: black;
     transition: background-color .2s;
   }
-  .monthSelectLight:hover{
+
+  .monthSelectLight:hover {
     background-color: deepskyblue;
   }
-  .monthButton{
+
+  .monthButton {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -276,27 +291,33 @@
     width: 100%;
     height: 100%;
   }
-  .monthButton:hover{
+
+  .monthButton:hover {
     background-color: blue;
   }
-  .day{
+
+  .day {
     cursor: default;
   }
 
-  .display{
+  .display {
     cursor: pointer;
     transition: background-color .2s;
   }
-  .display:hover{
+
+  .display:hover {
     background-color: dodgerblue;
   }
-  .event{
+
+  .event {
     background-color: blueviolet;
   }
-  .select{
+
+  .select {
     background-color: blue;
   }
-  .disable{
+
+  .disable {
     cursor: default;
     color: gray;
   }

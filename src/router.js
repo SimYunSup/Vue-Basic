@@ -12,12 +12,12 @@ export default new Router({
       component: () => import('./views/Main.vue')
     },
     {
-      path: '/view/Address',
+      path: '/view/address',
       name: 'address',
       component: () => import('./views/Address.vue')
     },
     {
-      path: '/view/Calendar',
+      path: '/view/calendar',
       name: 'calendar',
       component: () => import('./views/Calendar.vue')
     }

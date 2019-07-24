@@ -36,8 +36,8 @@
 </template>
 
 <script>
-  import background from '../components/sharing/background'
-  import addressRow from '../components/Address/Addressrow'
+  import background from '../components/sharing/Background'
+  import addressRow from '../components/address/AddressRow'
   export default {
     name: "Address",
     data() {

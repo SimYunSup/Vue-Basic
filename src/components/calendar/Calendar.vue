@@ -81,37 +81,15 @@
 </template>
 
 <script>
-  function dateStringGMT(dates) {
-    const YEAR_OPTIONS = {
-      year: 'numeric',
-      month: '2-digit',
-      date: '2-digit'
-    }
-    return new Intl.DateTimeFormat(YEAR_OPTIONS).format(dates)
-  }
-
-  function yearOfString(date) {
-    let nowDate = new Date(date)
-    return Number(dateStringGMT(nowDate).slice(0, 4))
-  }
-
-  function monthOfString(date) {
-    let nowDate = new Date(date)
-    return Number(dateStringGMT(nowDate).slice(5, 7))
-  }
-
-  function dateOfString(date) {
-    let nowDate = new Date(date)
-    return Number(dateStringGMT(nowDate).slice(8, 10))
-  }
+  import { mapGetters } from 'vuex'
 
   export default {
     name: "calendar",
     data() {
       return {
-        displayYear: this.yearOfString,
-        displayMonth: monthOfString(this.initialDateString),
-        displayDate: dateOfString(this.initialDateString),
+        displayYear: this.yearOfString(this.initialDateString),
+        displayMonth: this.monthOfString(this.initialDateString),
+        displayDate: this.dateOfString(this.initialDateString),
         monthInfo: ['January', 'February', 'March', 'April', 'May', 'June',
           'July', 'August', 'September', 'October', 'November', 'December'],
         dayInfo: ['Sun', 'Mon', 'Tus', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -143,7 +121,7 @@
             this.displayYear,
             this.displayMonth - 1,
             this.displayDate)
-          let displayDateString = dateStringGMT(displayDate).slice(0, 10)
+          let displayDateString = this.dateStringGMT(displayDate)
           this.$emit('selectDate', {date: displayDateString})
         }
       },
@@ -160,15 +138,31 @@
           this.displayMonth = 1
         } else
           this.displayMonth++
+      },
+      yearOfString(dateString) {
+        return dateString.slice(0, 4) * 1
+      },
+      monthOfString(dateString) {
+        return Number(dateString.slice(6, 8))
+      },
+      dateOfString(dateString) {
+        return dateString.slice(10, 12) * 1
+      },
+      dateStringGMT(dateValue) {
+        let date = new Date(dateValue)
+        const YEAR_OPTIONS = {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }
+        return new Intl.DateTimeFormat('ko-KR', YEAR_OPTIONS).format(date)
       }
     },
     computed: {
-      yearOfString() {
-        return this.initialDateString.slice(0, 4) * 1
-      },
+      ...mapGetters([
+        'isDarkMode'
+      ]),
       calendar() {
-        console.log(this.displayYear)
-        console.log(this.displayMonth)
         let displayFirstDate = new Date(
           this.displayYear,
           this.displayMonth - 1,
@@ -181,8 +175,8 @@
           for (let j = 0; j < 7; j++) {
             let displayDate = displayFirstDate.getDate()
             let displayMonth = displayFirstDate.getMonth() + 1
-            let displayNowDateString = dateStringGMT(displayFirstDate)
-              .slice(0, 10)
+            let displayNowDateString = this.dateStringGMT(displayFirstDate)
+              .slice(0, 12)
             let eventEnable = this.event.find(
               (el) => {
                 return el.dateString === displayNowDateString
@@ -192,7 +186,7 @@
             dateArray[i][j] = {
               date: displayDate,
               enable: {
-                select: monthOfString(this.initialDateString) === displayMonth
+                select: this.monthOfString(this.initialDateString) === displayMonth
                   && this.displayDate === displayFirstDate.getDate(),
                 event: eventEnable,
                 display: this.displayMonth === displayMonth,
@@ -212,8 +206,8 @@
       },
       monthSelectDarkMode() {
         return {
-          monthSelectDark: this.$store.state.darkMode,
-          monthSelectLight: !this.$store.state.darkMode,
+          monthSelectDark: this.isDarkMode,
+          monthSelectLight: !this.isDarkMode,
           monthSelect: true
         }
       }

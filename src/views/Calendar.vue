@@ -68,8 +68,8 @@
 </template>
 
 <script>
-  import background from '../components/sharing/background'
-  import calendar from '../components/Calendar/Calendar'
+  import background from '../components/sharing/Background'
+  import calendar from '../components/calendar/Calendar'
 
   function nowDateString(){
     let nowDate = new Date()
@@ -81,7 +81,7 @@
     let dateString = date.length === 2
       ? date
       : '0' + date
-    return nowDate.getFullYear() + '-' + monthString + '-' + dateString
+    return nowDate.getFullYear() + '. ' + monthString + '. ' + dateString
   }
   export default {
     name: "Calendar",
@@ -91,17 +91,17 @@
         eventExplain: '',
         selectedDateString: nowDateString(),
         events: [{
-            dateString: '2019-08-30',
+            dateString: '2019. 08. 30',
             name: 'Yunsup\'s Singum',
             explain: 'Military'
           },
           {
-            dateString: '2019-08-03',
+            dateString: '2019. 08. 03',
             name: '19-2 FrontEnd Meeting',
             explain: 'Everyone come'
           },
           {
-            dateString: '2019-07-20',
+            dateString: '2019. 07. 20',
             name: 'Go to Toronto',
             explain: 'at 7 AM'
           }
@@ -156,6 +156,15 @@
           colLight: !this.$store.state.darkMode,
           input: true
         }
+      },
+      dateStringGMT() {
+        let nowDate = new Date()
+        const YEAR_OPTIONS = {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }
+        return new Intl.DateTimeFormat('ko-KR', YEAR_OPTIONS).format(nowDate)
       }
     },
     components: {

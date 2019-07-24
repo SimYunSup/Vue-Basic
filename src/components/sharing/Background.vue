@@ -12,9 +12,9 @@
           <div class="headerText">
             {{routing}}
           </div>
-          <div class="toggleMode">
-            <div class="toggleDark" @click="toggleDark"></div>
-            <div class="toggleLight" @click="toggleLight"></div>
+          <div class="changeMode">
+            <div class="changeDark" @click="toggleDark"></div>
+            <div class="changeLight" @click="toggleLight"></div>
           </div>
         </div>
         <div class="mainItem">
@@ -32,8 +32,8 @@
 </template>
 
 <script>
-  import foo from './foo'
-  import { mapMutations } from 'vuex'
+  import foo from './Footer'
+  import { mapMutations, mapGetters } from 'vuex'
   export default {
     name: "background",
     props: {
@@ -43,16 +43,19 @@
       }
     },
     methods: {
-      ...mapMutations(['toggleDark', 'toggleLight']),
+      ...mapMutations(['changeDark', 'changeLight']),
       home(){
         this.$router.push('/')
       }
     },
     computed: {
+      ...mapGetters({
+        isDarkMode: "isDarkMode"
+      }),
       containeDarkMode(){
         return {
-          containerDark: this.$store.state.darkMode,
-          containerLight: !this.$store.state.darkMode,
+          containerDark: this.isDarkMode,
+          containerLight: !this.isDarkMode,
           container: true
         }
       },
@@ -115,7 +118,7 @@
     background-color: dodgerblue;
   }
 
-  .toggleMode{
+  .changeMode{
     float: right;
     display: flex;
     flex-direction: row;

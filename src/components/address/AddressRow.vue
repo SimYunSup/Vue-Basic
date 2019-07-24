@@ -81,6 +81,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
   export default {
     name: "addressRow",
     data() {
@@ -128,6 +130,9 @@
       }
     },
     computed: {
+      ...mapState({
+        isDarkMode: state => state.darkMode
+      }),
       indexOfBox() {
         if(this.type === 'list')
           return this.index + 1
@@ -136,14 +141,14 @@
       },
       columnDarkMode(){
         return {
-          columnDark: this.$store.state.darkMode,
-          columnLight: !this.$store.state.darkMode,
+          columnDark: this.isDarkMode,
+          columnLight: !this.isDarkMode,
           column: true
         }
       },
       buttonDarkMode(){
         return{
-          buttonDark: this.$store.state.darkMode,
+          buttonDark: this.$store.state .darkMode,
           buttonLight: !this.$store.state.darkMode,
           button: true
         }

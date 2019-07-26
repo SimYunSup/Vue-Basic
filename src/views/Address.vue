@@ -2,7 +2,7 @@
   <background
     routing="Address"
   >
-    <div class="mainAddress">
+    <div class="address">
       <address-row type="first">
         <template #index>Index</template>
         <template #name>Name</template>
@@ -11,16 +11,16 @@
         <template #memo>Memo</template>
       </address-row>
       <transition-group
-        name="address"
+        name="address-fade"
       >
         <address-row
           v-for="(data, index) in personalData"
           :key="data.name"
           type="list"
           :index="index"
-          @removePerson="removePersonal"
+          @removePerson="removePersonalData"
         >
-          <template #index="{indexOfBox}">{{indexOfBox}}.</template>
+          <template #index="{indexOfAddress}">{{indexOfAddress}}.</template>
           <template #name>{{data.name}}</template>
           <template #email>{{data.emailAddress}}</template>
           <template #gender>{{data.gender}}</template>
@@ -29,7 +29,7 @@
       </transition-group>
       <address-row
         type="add"
-        @addPerson="pushPersonal"
+        @addPerson="addPersonalData"
       ></address-row>
     </div>
   </background>
@@ -42,6 +42,7 @@
     name: "Address",
     data() {
       return {
+        //  name / emailAddress / gender / memo(optional)
         personalData: [
           {
             name: 'Sim Yunsup',
@@ -65,7 +66,9 @@
       }
     },
     methods: {
-      pushPersonal(data){
+      // if addPerson event
+      addPersonalData(data){
+        // make array include values of object
         let values = Object.values(data)
         let count = 0
         const emailReg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
@@ -78,6 +81,7 @@
             count++
           }
         }
+
         if(count < 1){
           alert('Email 형식을 지켜주세요.')
           return
@@ -85,7 +89,8 @@
 
         this.personalData.push(data)
       },
-      removePersonal(index){
+      //if removePerson event
+      removePersonalData(index){
         this.personalData.splice(index, 1)
       }
     },
@@ -97,16 +102,17 @@
 </script>
 
 <style scoped>
-  .mainAddress {
+  .address {
     margin-left: auto;
     margin-right: auto;
     padding-top: 50px;
     padding-bottom: 50px;
   }
-  .address-enter-active, .address-leave-active {
+
+  .address-fade-enter-active, .address-fade-leave-active {
     transition: all .5s;
   }
-  .address-enter, .address-leave-to {
+  .address-fade-enter, .address-fade-leave-to {
     opacity: 0;
     transform: translateX(200px);
   }

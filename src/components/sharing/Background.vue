@@ -2,22 +2,28 @@
   <div>
     <div class="background">
       <div :class="containeDarkMode">
-        <div class="backgroundHeader">
+        <div class="background__header">
           <div
             :class="backButtonDarkMode"
-            @click="home"
+            @click="goToHome"
           >
             Home
           </div>
-          <div class="headerText">
+          <div class="background__headertext">
             {{routing}}
           </div>
-          <div class="changeMode">
-            <div class="changeDark" @click="toggleDark"></div>
-            <div class="changeLight" @click="toggleLight"></div>
+          <div class="background__modarea">
+            <div
+              class="background__mod--dark"
+              @click="changeDark"
+            ></div>
+            <div
+              class="background__mod--light"
+              @click="changeLight"
+            ></div>
           </div>
         </div>
-        <div class="mainItem">
+        <div class="background__main">
           <slot></slot>
           <foo
             facebook="https://www.facebook.com/pedogunu"
@@ -34,6 +40,7 @@
 <script>
   import foo from './Footer'
   import { mapMutations, mapGetters } from 'vuex'
+
   export default {
     name: "background",
     props: {
@@ -43,27 +50,34 @@
       }
     },
     methods: {
-      ...mapMutations(['changeDark', 'changeLight']),
-      home(){
+      ...mapMutations(
+        'sharing',
+        ['changeDark', 'changeLight']),
+      goToHome(){
         this.$router.push('/')
       }
     },
     computed: {
-      ...mapGetters({
-        isDarkMode: "isDarkMode"
+      ...mapGetters(
+        'sharing',
+        ['isDarkMode']),
+      ...mapGetters(
+        'sharing',
+        {
+          isDarkMode2: "isDarkMode"
       }),
       containeDarkMode(){
         return {
-          containerDark: this.isDarkMode,
-          containerLight: !this.isDarkMode,
-          container: true
+          'background__container--dark': this.isDarkMode,
+          'background__container--light': !this.isDarkMode,
+          'background__container': true
         }
       },
       backButtonDarkMode(){
         return {
-          backButtonDark: this.$store.state.darkMode,
-          backButtonLight: !this.$store.state.darkMode,
-          backButton: true
+          'background__homebutton--dark': this.isDarkMode2,
+          'background__homebutton--light': !this.isDarkMode2,
+          'background__homebutton': true
         }
       }
     },
@@ -78,25 +92,25 @@
     height: 100vh;
   }
 
-  .container {
+  .background__container {
     margin: 0 auto;
     width: 1000px;
     box-shadow:0 0 1px black;
   }
-  .containerDark {
+  .background__container--dark {
     background-color: midnightblue;
     color: white;
   }
-  .containerLight {
+  .background__container--light {
     background-color: white;
     color: black;
   }
 
-  .backgroundHeader{
+  .background__header{
     border-bottom: .5px gray solid;
     height: 36px;
   }
-  .backButton {
+  .background__homebutton {
     float: left;
     padding-top: 6px;
     justify-content: center;
@@ -105,20 +119,20 @@
     width: 6%;
     height: 31px;
   }
-  .backButtonLight {
+  .background__homebutton--light {
     transition: background-color .2s;
   }
-  .backButtonLight:hover {
+  .background__homebutton--light:hover {
     background-color: gray;
   }
-  .backButtonDark {
+  .background__homebutton--dark {
     transition: background-color .2s;
   }
-  .backButtonDark:hover {
+  .background__homebutton--dark:hover {
     background-color: dodgerblue;
   }
 
-  .changeMode{
+  .background__modarea{
     float: right;
     display: flex;
     flex-direction: row;
@@ -128,7 +142,7 @@
     width: 10%;
     height: 100%;
   }
-  .toggleLight{
+  .background__mod--light{
     border: black 1px solid;
     border-radius: 2px;
     cursor: pointer;
@@ -136,7 +150,7 @@
     width: 20px;
     height: 20px;
   }
-  .toggleDark{
+  .background__mod--dark{
     border: white 1px solid;
     border-radius: 2px;
     cursor: pointer;
@@ -145,7 +159,7 @@
     height: 20px;
   }
 
-  .headerText {
+  .background__headertext {
     float: left;
     padding-top: 6px;
     font-weight: bold;
@@ -154,7 +168,7 @@
     width: 9.25%;
     height: 31px;
   }
-  .mainItem {
+  .background__main {
     width: 1000px;
   }
 </style>

@@ -3,11 +3,11 @@
     routing="Main"
   >
     <list
-      v-for="{src, title, explain, address} in routeData"
+      v-for="{src, title, explanation, address} in routeData"
       :key="title"
       :img-src="src"
       :list-title="title"
-      :list-explain="explain"
+      :list-explanation="explanation"
       :address="address"
     />
   </background>
@@ -21,15 +21,16 @@
     name: "Main",
     data() {
       return {
+        //title / src(optional) / explanation(optional) / address (optional)
         routeData: [{
           src: 'https://images.pexels.com/photos/205414/pexels-photo-205414.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
           title: 'Address',
-          explain: 'address for Yunsup',
+          explanation: 'address for Yunsup',
           address: '/address'
         }, {
           src: 'https://images.pexels.com/photos/1020323/pexels-photo-1020323.jpeg?cs=srgb&dl=agenda-calendar-data-1020323.jpg&fm=jpg',
           title: 'calendar',
-          explain: 'calendar for Newbie',
+          explanation: 'calendar for Newbie',
           address: '/calendar'
         }, {
           title: 'Sups'

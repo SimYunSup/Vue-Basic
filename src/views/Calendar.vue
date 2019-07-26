@@ -3,32 +3,32 @@
     routing="Calendar"
   >
     <div class="calendar">
-      <div class="mainCalendar">
-        <div class="calendarTable">
+      <div class="calendar__main">
+        <div class="calendar__table">
           <calendar
-            :initial-date-string="selectedDateString"
-            :event="events"
+            :selected-date-string="selectedDateString"
+            :events="events"
             @selectDate="selectedDate"
           />
         </div>
       </div>
-      <div class="eventCalendar">
-        <div class="eventDate">
+      <div class="calendar__rightsidebar">
+        <div class="calendar__selecteddate">
           {{selectedDateString}}
         </div>
-        <div class="events">
+        <div class="calendar__events">
           <transition-group
             name="plus"
           >
             <div
-              :class="{event: true}"
+              :class="{'calendar__event': true}"
               v-for="event in selectedEvent"
               :key="event.name"
             >
-              <div class="name">
+              <div class="calendar__eventname">
                 {{event.name}}
               </div>
-              <div class="explain">
+              <div class="calendar__eventexlpanation">
                 {{event.explain}}
               </div>
               <button
@@ -39,8 +39,8 @@
               </button>
             </div>
           </transition-group>
-          <div class="plusevents">
-            <div class="inputs">
+          <div class="calendar__addevent">
+            <div class="calendar__addeventinputs">
               <input
                 type="text"
                 :class="inputDarkMode"
@@ -70,65 +70,73 @@
 <script>
   import background from '../components/sharing/Background'
   import calendar from '../components/calendar/Calendar'
+  import { mapState } from 'vuex'
 
-  function nowDateString(){
-    let nowDate = new Date()
-    let month = '' + (nowDate.getMonth() + 1)
-    let date = '' + nowDate.getDate()
-    let monthString = month.length === 2
-      ? month
-      : '0' + month
-    let dateString = date.length === 2
-      ? date
-      : '0' + date
-    return nowDate.getFullYear() + '. ' + monthString + '. ' + dateString
-  }
   export default {
     name: "Calendar",
     data() {
       return {
+        // event for plusEvent
         eventName: '',
         eventExplain: '',
-        selectedDateString: nowDateString(),
+        // prop to the Calendar
+        selectedDateString: this.nowDateString(),
         events: [{
-            dateString: '2019. 08. 30',
+            dateString: '2019. 08. 30.',
             name: 'Yunsup\'s Singum',
             explain: 'Military'
           },
           {
-            dateString: '2019. 08. 03',
+            dateString: '2019. 08. 03.',
             name: '19-2 FrontEnd Meeting',
             explain: 'Everyone come'
           },
           {
-            dateString: '2019. 07. 20',
+            dateString: '2019. 07. 20.',
             name: 'Go to Toronto',
             explain: 'at 7 AM'
           }
-        ],
-        buttons: ['Last Year', 'Last Month', 'Last Week', 'Today',
-        'Next Week', 'Next Month', 'Last Year']
+        ]
       }
     },
     methods: {
+      //if calendar component emit select event
       selectedDate(date){
-        this.selectedDateString = date.date
+        this.selectedDateString = date
       },
       plusEvent(){
-        this.events.push({
-          dateString: this.selectedDateString,
-          name: this.eventName,
-          explain: this.eventExplain
-        })
-        this.eventName = ''
-        this.eventExplain = ''
+        if(!(this.eventName === '')){
+          this.events.push({
+            dateString: this.selectedDateString,
+            name: this.eventName,
+            explain: this.eventExplain
+          })
+          this.eventName = ''
+          this.eventExplain = ''
+        } else {
+          alert('Event 이름을 입력해주세요')
+        }
       },
       minusEvent(event){
         let index = this.events.indexOf(event)
         this.events.splice(index, 1)
+      },
+      nowDateString() {
+        let nowDate = new Date()
+        const YEAR_OPTIONS = {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }
+        return new Intl.DateTimeFormat('ko-KR', YEAR_OPTIONS).format(nowDate)
       }
     },
     computed: {
+      ...mapState(
+        'sharing',
+        {
+          isDarkMode: 'darkMode'
+      }),
       selectedEvent(){
         return this.events.filter(
           (el) => {
@@ -138,33 +146,24 @@
       },
       addeventDarkMode(){
         return{
-          colDark: this.$store.state.darkMode,
-          colLight: !this.$store.state.darkMode,
-          addevent: true
+          'calendar__event--dark': this.isDarkMode,
+          'calendar__event--light': !this.isDarkMode,
+          'calendar__addeventbutton': true
         }
       },
       removeeventDarkMode(){
         return{
-          colDark: this.$store.state.darkMode,
-          colLight: !this.$store.state.darkMode,
-          removeevent: true
+          'calendar__event--dark': this.isDarkMode,
+          'calendar__event--light': !this.isDarkMode,
+          'calendar__removeeventbutton': true
         }
       },
       inputDarkMode(){
         return{
-          colDark: this.$store.state.darkMode,
-          colLight: !this.$store.state.darkMode,
-          input: true
+          'calendar__event--dark': this.isDarkMode,
+          'calendar__event--light': !this.isDarkMode,
+          'calendar__addeventinput': true
         }
-      },
-      dateStringGMT() {
-        let nowDate = new Date()
-        const YEAR_OPTIONS = {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        }
-        return new Intl.DateTimeFormat('ko-KR', YEAR_OPTIONS).format(nowDate)
       }
     },
     components: {
@@ -180,7 +179,8 @@
     flex-direction: row;
     width: 100%
   }
-  .mainCalendar{
+  /* For main area include datetable */
+  .calendar__main{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -189,16 +189,18 @@
     padding-bottom: 50px;
     width: 70%;
   }
-  .calendarTable{
+  /* calendar component */
+  .calendar__table{
     margin-left: auto;
     margin-right: auto;
   }
-  .eventCalendar{
+  /* For event Array */
+  .calendar__rightsidebar{
     width: 30%;
     height: fit-content;
   }
 
-  .eventDate{
+  .calendar__selecteddate{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -213,7 +215,7 @@
     height: 15%
   }
 
-  .event{
+  .calendar__event{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -229,17 +231,17 @@
     transform: translateX(100px);
   }
 
-  .name{
+  .calendar__eventname{
     font-size: 25px;
     margin-right: auto;
     margin-left: auto;
   }
-  .explain{
+  .calendar__eventexlpanation{
     margin-right: auto;
     margin-left: auto;
   }
 
-  .plusevents{
+  .calendar__addevent{
     display: flex;
     justify-content: space-around;
     margin-right: auto;
@@ -249,7 +251,7 @@
     margin-top: 20px;
     width: 80%;
   }
-  .inputs{
+  .calendar__addeventinputs{
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -258,7 +260,7 @@
     border-right: 1px gray solid;
     width: 60%;
   }
-  .input{
+  .calendar__addeventinput{
     margin-right: auto;
     margin-left: auto;
     margin-top: 5px;
@@ -267,7 +269,7 @@
     width: 70%;
     height: 20px;
   }
-  .addevent{
+  .calendar__addeventbutton{
     margin-right: auto;
     margin-left: auto;
     border: 0;
@@ -275,7 +277,7 @@
     cursor: pointer;
     width: 30%;
   }
-  .removeevent{
+  .calendar__removeeventbutton{
     margin-top: 10px;
     margin-right: auto;
     margin-left: auto;
@@ -285,20 +287,20 @@
     width: 30%;
   }
 
-  .colLight{
+  .calendar__event--light{
     background-color: white;
     color: black;
     transition: background-color .2s;
   }
-  .colLight:hover{
+  .calendar__event--light:hover{
     background-color: deepskyblue;
   }
-  .colDark{
+  .calendar__event--dark{
     background-color: midnightblue;
     color: white;
     transition: background-color .2s;
   }
-  .colDark:hover{
+  .calendar__event--dark:hover{
     background-color: royalblue;
   }
 

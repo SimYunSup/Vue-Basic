@@ -2,16 +2,27 @@
   <transition
     name="fade"
   >
-    <div class="list" v-if="show" @click="routing">
+    <div
+      class="list"
+      v-if="show"
+      @click="routing"
+    >
       <div>
-        <img :src="imgSrc" :alt="listTitle">
+        <img
+          class="list__img"
+          :src="imgSrc"
+          :alt="listTitle"
+        >
       </div>
-      <div class="text">
-        <div class="text-title">
+      <div class="list__text">
+        <div class="list__title">
           {{listTitle}}
         </div>
-        <div v-if="isExplain" class="text-explain">
-          {{listExplain}}
+        <div
+          v-if="isExplain"
+          class="list__explanation"
+        >
+          {{listExplanation}}
         </div>
       </div>
     </div>
@@ -20,6 +31,7 @@
 
 <script>
   import image from '../../assets/sups.jpg'
+
   export default {
     name: "listMain",
     data() {
@@ -36,7 +48,7 @@
         type: String,
         required: true
       },
-      listExplain: {
+      listExplanation: {
         type: String
       },
       address: {
@@ -47,6 +59,7 @@
       isExplain(){
         return !!this.listExplain
       },
+      //routing to Address
       routing(){
         if(this.address){
           this.$router.push('/view'+this.address)
@@ -77,18 +90,18 @@
     width: 510px;
     height: 110px;
   }
-  .list:hover img{
+  .list:hover .list__img{
     width: 110px;
     height: 110px;
   }
-  .list:hover .text .text-title {
+  .list:hover .text .list__title {
     font-size: 22px;
   }
-  .list:hover .text .text-explain{
+  .list:hover .text .list__explanation{
     font-size: 1.1rem;
   }
 
-  .text{
+  .list__text{
     float: left;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -97,7 +110,7 @@
     width: 385px;
   }
 
-  .text-title{
+  .list__title{
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 5px;
@@ -105,12 +118,12 @@
     height: 20px;
   }
 
-  .text-explain{
+  .list__explanation{
     transition: all.4s;
     height: 70px;
   }
 
-  img {
+  .list__img {
     float: left;
     transition: all .4s;
     width: 100px;

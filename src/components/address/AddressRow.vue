@@ -5,16 +5,16 @@
     @mouseleave="disable"
   >
     <div
-      class="index"
+      class="addressrow__index"
       :class="columnDarkMode"
     >
       <slot
         name="index"
-        :index-of-box="indexOfBox"
+        :index-of-address="indexOfAddress"
       ></slot>
     </div>
     <div
-      class="name"
+      class="addressrow__personname"
       :class="columnDarkMode"
     >
       <slot name="name">
@@ -27,7 +27,7 @@
       </slot>
     </div>
     <div
-      class="email"
+      class="addressrow__email"
       :class="columnDarkMode"
     >
       <slot name="email">
@@ -40,12 +40,12 @@
       </slot>
     </div>
     <div
-      class="gender"
+      class="addressrow__gender"
       :class="columnDarkMode"
     >
       <slot name="gender">
         <select
-          class="genderSelect"
+          class="addressrow__genderselect"
           :class="columnDarkMode"
           v-model="personData.gender"
         >
@@ -56,7 +56,7 @@
       </slot>
     </div>
     <div
-      class="memo"
+      class="addressrow__memo"
       :class="columnDarkMode"
     >
       <slot name="memo">
@@ -72,9 +72,9 @@
       <button
         :class="buttonDarkMode"
         v-if="show"
-        @click="listEvent"
+        @click="buttonEvent"
       >
-        {{isType}}
+        {{nameOfEvent}}
       </button>
     </transition>
   </div>
@@ -87,7 +87,9 @@
     name: "addressRow",
     data() {
       return {
+        // For button fade if mouseover
         show: false,
+        // inputs for addPerson
         personData: {
           name: '',
           gender: '',
@@ -95,22 +97,25 @@
           memo: ''
         },
         rowBox: {
-          box: true,
-          firstBox: this.type === 'first',
-          otherBox: !(this.type === 'first')
+          addressrow: true,
+          'addressrow--first': this.type === 'first',
+          'addressrow--other': !(this.type === 'first')
         }
       }
     },
     props: {
+      // first / list / add
       type: {
         type: String,
         required: true
       },
+      // use for scoped-slot
       index: {
         type: Number
       }
     },
     methods: {
+      //trigger button fade if mouseover
       enable() {
         if(this.type !== 'first')
           this.show = true
@@ -119,7 +124,8 @@
         if(this.type !== 'first')
           this.show = false
       },
-      listEvent(){
+      //type of event depending on type
+      buttonEvent(){
         if(this.type === 'list')
           this.$emit('removePerson', this.index)
         else if(this.type === 'add'){
@@ -130,30 +136,35 @@
       }
     },
     computed: {
-      ...mapState({
-        isDarkMode: state => state.darkMode
+      ...mapState(
+        'sharing',
+        {
+          isDarkMode: state => state.darkMode
       }),
-      indexOfBox() {
+      //index of the Address
+      indexOfAddress() {
         if(this.type === 'list')
           return this.index + 1
         else
           return 0
       },
+      //for DarkMode
       columnDarkMode(){
         return {
-          columnDark: this.isDarkMode,
-          columnLight: !this.isDarkMode,
-          column: true
+          'addressrow__col--dark': this.isDarkMode,
+          'addressrow__col--light': !this.isDarkMode,
+          'addressrow__col': true
         }
       },
       buttonDarkMode(){
         return{
-          buttonDark: this.$store.state .darkMode,
-          buttonLight: !this.$store.state.darkMode,
-          button: true
+          'addressrow__button--dark': this.isDarkMode,
+          'addressrow__button--light': !this.isDarkMode,
+          'addressrow__button': true
         }
       },
-      isType() {
+      //name of event depending on type
+      nameOfEvent() {
         if(this.type === 'list')
           return 'Remove'
         else
@@ -164,7 +175,7 @@
 </script>
 
 <style scoped>
-  .box{
+  .addressrow{
     margin-left: auto;
     margin-right: auto;
     border-top: gray 1px solid;
@@ -173,14 +184,14 @@
     overflow: hidden;
     width: 850px;
   }
-  .firstBox{
+  .addressrow--first{
     height: 60px;
   }
-  .otherBox{
+  .addressrow--other{
     height: 40px;
   }
 
-  .column {
+  .addressrow__col {
     float: left;
     display: flex;
     align-items: center;
@@ -192,47 +203,57 @@
     width: 100%;
     height: 80%;
   }
-  .columnDark {
+  .addressrow__col--dark {
     background-color: midnightblue;
     color: white;
   }
-  .columnLight {
+  .addressrow__col--light {
     background-color: white;
     color: black;
   }
-  .index {
+  .addressrow__index {
     width: 7%;
   }
-  .name {
+  .addressrow__personname {
     width: 20%;
   }
-  .email {
+  .addressrow__email {
     width: 20%;
    }
-  .gender {
+  .addressrow__gender {
     width: 13%;
   }
-  .genderSelect{
+  .addressrow__genderselect{
     cursor: pointer;
   }
-  .memo {
+  .addressrow__memo {
     width: 27%;
   }
-  .button {
+  .addressrow__button {
     width: 10%;
     border-top: 0;
     border-bottom: 0;
     cursor: pointer;
   }
-  .buttonLight {
+  .addressrow__button--light {
     border-left: 1px gray solid;
     border-right: 1px gray solid;
     background-color: white;
     color: black;
     transition: background-color .3s;
   }
-  .buttonLight:hover {
-    background-color: deepskyblue;
+  .addressrow__button--light:hover {
+    background-color: gray;
+  }
+  .addressrow__button--dark {
+    border-left: 1px white solid;
+    border-right: 1px white solid;
+    background-color: midnightblue;
+    color: white;
+    transition: background-color .3s;
+  }
+  .addressrow__button--dark:hover {
+    background-color: dodgerblue;
   }
 
   .fade-enter-active, .fade-leave-active{

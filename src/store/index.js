@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import sharing from './modules/sharing'
+import sharing from './modules/Sharing'
 
 Vue.use(Vuex)
 

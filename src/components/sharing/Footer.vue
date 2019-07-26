@@ -1,12 +1,12 @@
 <template functional>
-  <div class="foo">
+  <div class="footer">
     <div
       v-if="slots().default"
-      class="represents"
+      class="footer__represents"
     >
       <slot></slot>
     </div>
-    <div class="devSpaceWith">
+    <div class="footer__connection">
       <a :href="props.facebook">Dev's Facebook</a>
       <a :href="'mailto:'+props.emailAddress">Dev's Email</a>
     </div>
@@ -33,14 +33,14 @@
 </script>
 
 <style scoped>
-  .foo {
+  .footer {
     display: flex;
     justify-content: center;
     border-top: 1px gray solid;
     width: 1000px;
     height: 100px;
   }
-  .represents {
+  .footer__represents {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,7 +48,7 @@
     width: 300px;
     height: 100px;
   }
-  .devSpaceWith {
+  .footer__connection {
     display: flex;
     float: left;
     align-items: center;

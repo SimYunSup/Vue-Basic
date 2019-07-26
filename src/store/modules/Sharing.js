@@ -1,6 +1,6 @@
-
 const state = {
   //state for darkMode
+  //Initial state is Light
   darkMode: false
 }
 

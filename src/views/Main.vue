@@ -33,6 +33,10 @@
           explanation: 'calendar for Newbie',
           address: '/calendar'
         }, {
+          title: 'GradeCalculator',
+          explanation: 'GradeCalculator for KOREATECH',
+          address: '/gradecalculator'
+        }, {
           title: 'Sups'
         }]
       }

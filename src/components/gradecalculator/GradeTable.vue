@@ -19,7 +19,6 @@
     </tr>
     </thead>
     <tbody>
-    {{ gradeTable }}
       <tr
         v-for="(gradeInfo, index) in gradeTable"
         :key="index"

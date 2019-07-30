@@ -66,6 +66,7 @@ const getters = {
 
     return array
   },
+  //not used
   getAverageGradePointArray({ grades }) {
     let array = []
     let gradePointTotal = 0
@@ -205,9 +206,16 @@ const mutations = {
           return gradeInfo
         }
       )
-    //error concurred!!!!
-    console.log(gradeArray)
-    for(let i = 0; i < state.displayGradeArray.length; i++){
+      .filter(
+        element => {
+          let value = Object.values(element)
+
+          for(let i = 0; i < value.length; i++)
+            if(value[i])
+              return true
+        }
+      )
+    for(let i = 0; i < gradeArray.length - 1; i++){
       let value = Object.values(gradeArray[i])
       let count = 0
 
@@ -215,13 +223,12 @@ const mutations = {
         if(!value[j])
           count++
 
-      if(count === 4)
+      if(count === 4) {
         gradeArray.splice(i, 1)
-      else if(count > 0) {
+      } else if(count > 0) {
         state.filterStatus = 'Blank Exists'
         return
       }
-      console.log(gradeArray.concat(i))
     }
     if(gradeArray === []){
       state.filterStatus = 'Remove GradeArray'
@@ -239,7 +246,6 @@ const actions = {
   addGrade({ state, getters, commit, dispatch }) {
     let index = getters.findGradeIndex(state.selectedSemester)
     commit('filterDisplayGradeArray')
-    console.log(state.filterStatus)
     if(state.filterStatus === 'Blank Exists')
       alert('빈 칸을 모두 채우세요')
     else if (state.filterStatus === 'Success'){

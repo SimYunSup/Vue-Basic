@@ -15,7 +15,6 @@
         </td>
       </tr>
     </thead>
-    <button @click="button">asdf</button>
     <template
       v-if="this.getCreditArray.length !== 0"
     >
@@ -63,11 +62,6 @@
           '교양',
           '총합'
         ]
-      }
-    },
-    methods: {
-      button() {
-        console.log(this.getCreditArray)
       }
     },
     computed: mapGetters(

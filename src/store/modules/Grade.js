@@ -6,21 +6,45 @@ const state = {
   grades: [
     {
     semester: '1학년 1학기',
-    gradeArray: [{
-      subject: 'asdf',
-      gradePoint: 'A',
-      type: 'major',
-      credit: 4
-    }]
-    },
-    {
-      semester: '1학년 2학기',
-      gradeArray: [{
-        subject: 'assd',
+    gradeArray: [
+      {
+        subject: '물리적사고와실험1',
         gradePoint: 'A',
         type: 'culture',
         credit: 4
-      }]
+      },
+      {
+        subject: '수학적사고',
+        gradePoint: 'A+',
+        type: 'culture',
+        credit: 4
+      },{
+        subject: 'C프로그래밍1',
+        gradePoint: 'A+',
+        type: 'major',
+        credit: 3
+      },{
+        subject: '컴퓨터공학입문',
+        gradePoint: 'A+',
+        type: 'major',
+        credit: 3
+      },{
+        subject: '영어읽기와쓰기1',
+        gradePoint: 'B+',
+        type: 'culture',
+        credit: 3
+      },{
+        subject: 'HRD개론',
+        gradePoint: 'A+',
+        type: 'culture',
+        credit: 2
+      },{
+        subject: '대학생활과비전',
+        gradePoint: 'P',
+        type: 'culture',
+        credit: 1
+      }
+    ]
     }
   ],
   //For GradeTable component to display gradeArray / select tag
@@ -167,7 +191,9 @@ const mutations = {
     } else {
       state.displayGradeArray = Array
         .apply(null, {length: 8})
-        .fill( {
+        // eslint-disable-next-line no-unused-vars
+        .map( el =>
+        el = {
           subject: '',
           gradePoint: '',
           type: '',
@@ -179,7 +205,9 @@ const mutations = {
   //for @input element inside gradeTable in GradeTable component
   //elementInfo = [changedValue, gradeArrayIndex, property]
   changeElementDisplayGradeArray(state, elementInfo){
+    console.log(elementInfo)
     state.displayGradeArray[elementInfo[1]][elementInfo[2]] = elementInfo[0]
+    console.log(state.displayGradeArray)
   },
   addElementDisplayGradeArray({ displayGradeArray }) {
     displayGradeArray.push({

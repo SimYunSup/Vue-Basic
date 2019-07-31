@@ -2,8 +2,20 @@
   <background
     routing="GradeCalculator"
   >
-    <grade></grade>
-    <grade-table></grade-table>
+    <div
+      class="gradecalculator"
+    >
+      <div
+        class="gradecalculator__gradetable"
+      >
+        <grade-table/>
+      </div>
+      <div
+        class="gradecalculator__grade"
+      >
+        <grade/>
+      </div>
+    </div>
   </background>
 </template>
 
@@ -26,5 +38,19 @@
 </script>
 
 <style scoped>
-
+  .gradecalculator {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  .gradecalculator__gradetable {
+    display: flex;
+    width: 65%;
+  }
+  .gradecalculator__grade {
+    display: flex;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 35%;
+  }
 </style>

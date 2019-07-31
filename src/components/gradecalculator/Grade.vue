@@ -7,8 +7,8 @@
         class="gradePoint__row"
       >
         <td
-          class="gradePoint__header"
-          v-for="name in tableHeadName"
+          :class="gradePointHeaderMode(index)"
+          v-for="(name, index) in tableHeadName"
           :key="name"
         >
           {{ name }}
@@ -25,7 +25,7 @@
           :key="index"
         >
           <td
-            class="gradePoint__col"
+            :class="gradePointColMode(index)"
             v-for="(column, index) in credits"
             :key="index"
           >
@@ -64,14 +64,66 @@
         ]
       }
     },
+    methods: {
+      gradePointColMode(index) {
+        return {
+          'gradePoint__col': true,
+          'gradePoint__col--first': index === 0,
+          'gradePoint__col--other': index !== 0
+        }
+      },
+      gradePointHeaderMode(index) {
+        return {
+          'gradePoint__header': true,
+          'gradePoint__header--first': index === 0,
+          'gradePoint__header--other': index !== 0
+        }
+      }
+    },
     computed: mapGetters(
       'grade',
       ['getCreditArray']
-    ),
-
+    )
   }
 </script>
 
 <style scoped>
+  .gradePoint {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+  }
+  .gradePoint__row {
+    display: flex;
+    flex-direction: row;
+    width: 250px;
+    height: 40px;
+  }
+  .gradePoint__header{
+    text-align: center;
+    margin: 5px;
+    border-bottom: 1px gray solid;
+  }
+  .gradePoint__header--first {
+    text-align: center;
+    width: 145px;
+  }
+  .gradePoint__header--other {
+    text-align: end;
+    width: 55px;
+  }
 
+  .gradePoint__col {
+    margin: 5px;
+  }
+  .gradePoint__col--first {
+    text-align: center;
+    width: 145px;
+  }
+  .gradePoint__col--other {
+    text-align: end;
+    width: 55px;
+  }
 </style>
